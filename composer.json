@@ -1,0 +1,17 @@
+{
+
+	"name": "jacob-ian/instagram-feed",
+	"description": "A simple Instagram feed using the old Instagram API",
+	"type": "library",
+	"homepage": "https://github.com/jacob-ian/instagram-feed",
+	"authors": {
+		"name": "Jacob Ian Matthews",
+		"email": "jacob@jacobian.com.au",
+		"homepage": "https://jacobian.com.au",
+		"role": "Developer"
+	},
+	"require":{
+		"php": ">=7.2.0"
+	}
+
+}
