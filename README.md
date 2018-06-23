@@ -60,7 +60,7 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 
 # Extras:
 
-- ```php instagramFetch() ``` also creates a database table named 'Details' which contains the following information:
+- ```instagramFetch() ``` also creates a database table named 'Details' which contains the following information:
 	- UserID: Instagram User ID
 	- ProfilePictureURL: The URL to your profile picture
 	- ProfilePictureLocal: The path to the locally stored copy of your profile picture
