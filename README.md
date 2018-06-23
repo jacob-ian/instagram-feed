@@ -16,9 +16,7 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 2. Create a MYSQL Database to hold the data:
 
 	```mysql
-
 	CREATE DATABASE instagram
-
 	```
 	The instagramFetch class will automatically create the table and populate it.
 
@@ -26,24 +24,20 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 2. Setup a cron-job that will point to a PHP file containing:
 
 	```php
-
 	require_once('instagram-feed/src/instagramFetch.class.php');
 
 	$instagramData = new instagramFetch($AccessToken, $database);
 	$instagramData->fetch();
-
 	```
 	Note that the parameter $database should be an array with the structure:
 
 	```php
-
 	$database = array(
 		"username"=>"[username]",
 		"password"=>"[password]",
 		"host"=>"[host]",
 		"database"=>"instagram"
 	);
-
 	```
 
 	This cron job should run every 15 minutes, but frequency can be increased depending on how often you wish the feed to refresh.
@@ -52,13 +46,10 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 3. To create the feed itself, use the following code on your PHP webpage:
 
 	```php
-
 	require_once('instagram-feed/src/instagramFeed.class.php');
 
 	$instagram_feed = new instagramFeed($database, $count);
 	print_r($instagram_feed->feed());
-
-
 	```
 
 	Where $count is an integer describing the number of latest posts to display in the feed. Instagram API is limited to a maximum of 20 posts.
