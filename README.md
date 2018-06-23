@@ -1,13 +1,13 @@
 # instagram-feed
 An Instagram Feed using the old API. It will cache the post data in your webserver and use a MYSQL database to store the metadata to maximise loading speeds.
 
-Requirements:
+# Requirements:
 
 - An Instagram Access Token connected to the desired account to display. Note: The account must be public.
 - PHP 7.2+
 
 
-Usage:
+# Usage:
 
 1. Include this repository in your project via Composer.
 
@@ -63,7 +63,8 @@ print_r($instagram_feed->feed());
 
 4. Enjoy!
 
-Extras:
+
+# Extras:
 
 - ```php instagramFetch() ``` also creates a database table named 'Details' which contains the following information:
 	- UserID: Instagram User ID
