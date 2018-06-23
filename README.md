@@ -25,7 +25,7 @@ CREATE DATABASE instagram
 
 ```php
 
-require_once('/src/instagramFetch.class.php');
+require_once('instagram-feed/src/instagramFetch.class.php');
 
 $instagramData = new instagramFetch($AccessToken, $database);
 $instagramData->fetch();
@@ -51,7 +51,7 @@ $database = array(
 
 ```php
 
-require_once('/src/instagramFeed.class.php');
+require_once('instagram-feed/src/instagramFeed.class.php');
 
 $instagram_feed = new instagramFeed($database, $count);
 print_r($instagram_feed->feed());
@@ -60,3 +60,5 @@ print_r($instagram_feed->feed());
 ```
 
 - Where $count is an integer describing the number of latest posts to display in the feed. Instagram API is limited to a maximum of 20 posts.
+
+4. Enjoy!
