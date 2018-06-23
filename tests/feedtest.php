@@ -15,3 +15,5 @@
 	$feed = new instagramFeed($database, 10);
 	echo "<pre>";
 	print_r($feed->feed());
+
+?>
