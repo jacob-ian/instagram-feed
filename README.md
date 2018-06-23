@@ -1,10 +1,12 @@
-# instagram-feed
+# Description:
 An Instagram Feed using the old API. It will cache the post data in your webserver and use a MYSQL database to store the metadata to maximise loading speeds.
+
 
 # Requirements:
 
 - An Instagram Access Token connected to the desired account to display. Note: The account must be public.
 - PHP 7.2+
+
 
 
 # Usage:
@@ -62,6 +64,7 @@ print_r($instagram_feed->feed());
 - Where $count is an integer describing the number of latest posts to display in the feed. Instagram API is limited to a maximum of 20 posts.
 
 4. Enjoy!
+
 
 
 # Extras:
