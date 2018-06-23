@@ -1,5 +1,5 @@
 # instagram-feed
-An Instagram Feed using the old API. It will cache the post data in the webserver and use a MYSQL database to store the metadata.
+An Instagram Feed using the old API. It will cache the post data in your webserver and use a MYSQL database to store the metadata to maximise loading speeds.
 
 Requirements:
 
@@ -62,3 +62,14 @@ print_r($instagram_feed->feed());
 - Where $count is an integer describing the number of latest posts to display in the feed. Instagram API is limited to a maximum of 20 posts.
 
 4. Enjoy!
+
+Extras:
+
+- ```php instagramFetch() ``` also creates a database table named 'Details' which contains the following information:
+	- UserID: Instagram User ID
+	- ProfilePictureURL: The URL to your profile picture
+	- ProfilePictureLocal: The path to the locally stored copy of your profile picture
+	- Followers: Your follower count
+	- Posts: Your post count
+	- LastPost: The time of your last post (according to latest refresh)
+	- LastUpdate: The time of the last successful instagramFetch cron job.
