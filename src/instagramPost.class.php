@@ -1,7 +1,11 @@
 <?php
 
 	/**
-	 * This class will format raw Instagram post data into HTML that can be styled using CSS.
+	 * This class will format raw Instagram post data into HTML that can be styled using CSS. This class is called from the instagramFeed class and should not need any user input.
+	 *
+	 * @author : Jacob Ian Matthews <jacob@jaobian.com.au>
+	 * @license : Apache 2.0
+	 * @copyright : 2018 Jacob Ian Matthews
 	 */
 	
 	class instagramPost {
