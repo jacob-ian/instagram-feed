@@ -28,6 +28,12 @@
 		public $count;
 
 		/**
+		 * [$name The name of the Instagram Feed to prevent CSS conflicts over multiple uses of the package]
+		 * @var String
+		 */
+		public $name;
+
+		/**
 		 * [$post_array An array of the unstyled/raw posts as json data]
 		 * @var Array
 		 */
@@ -75,7 +81,7 @@
 		 * @param  Array $db    An array containing the host, database, username and password for an SQL database.
 		 * @param  integer $count An integer with the requested number of Instagram posts to display.
 		 */
-		public function __construct($db, $count){
+		public function __construct($db, $count, $name){
 
 			// Save the input parameters as properties
 			$this->host = $db['host'];
@@ -83,6 +89,7 @@
 			$this->password = $db['password'];
 			$this->db = $db['database'];
 			$this->count = $count;
+			$this->name = $name;
 
 			// Connect to the database
 			$this->connectDB();
@@ -151,15 +158,26 @@
 			// Create an array for the formatted posts to output
 			$this->posts = array();
 
+			// Create HTML container for the feed
+			$containerOpen = "<div class='" . $this->name . "_instagram_feed'>";
+			$containerClose = "</div>";
+
+			// Put the open container string into the output array
+			array_push($this->posts, $containerOpen);
+
 			// Format each of the posts in the unformatted array
 			foreach($this->post_array as $post) {
 
-				$formatted = new instagramPost($post);
+				$formatted = new instagramPost($post, $this->name);
+
 
 				// Add the formatted post to the formatted posts array
-				array_push($this->posts, $formatted);
+				array_push($this->posts, $formatted->format());
 
 			}
+
+			// Put the close container string in the output array
+			array_push($this->posts, $containerClose);
 			
 			// Return the array of posts
 			return $this->posts;

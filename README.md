@@ -25,7 +25,6 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 
 	```php
 	require_once('instagram-feed/src/instagramFetch.class.php');
-
 	$instagramData = new instagramFetch($AccessToken, $database);
 	$instagramData->fetch();
 	```
@@ -47,12 +46,13 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 
 	```php
 	require_once('instagram-feed/src/instagramFeed.class.php');
-
-	$instagram_feed = new instagramFeed($database, $count);
-	print_r($instagram_feed->feed());
+	$instagram_feed = new instagramFeed($database, $count, $name);
+	echo implode("\n", $instagram_feed->feed());
 	```
 
-	Where $count is an integer describing the number of latest posts to display in the feed. Instagram API is limited to a maximum of 20 posts.
+	Where:
+	- $count is an integer describing the number of latest posts to display in the feed. Instagram API is limited to a maximum of 20 posts.
+	- $name is a string containing the name of the Instagram feed, e.g. home. This prevents conflicts in CSS when multiple feeds are used across a website.
 
 4. Enjoy!
 
