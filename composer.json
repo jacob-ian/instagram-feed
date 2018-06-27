@@ -4,7 +4,6 @@
 	"description": "A simple Instagram feed using the old Instagram API",
 	"type": "library",
 	"keywords": ["instagram", "feed", "php", "jacob-ian"],
-	"readme": "README.md",
 	"license: "Apache-2.0",
 	"homepage": "https://github.com/jacob-ian/instagram-feed",
 	"authors": [{
