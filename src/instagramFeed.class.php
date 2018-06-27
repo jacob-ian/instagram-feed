@@ -16,6 +16,9 @@
 
 	*/
 
+	// Give it the namespace
+	namespace JacobIan;
+
 	// Require the instagramPost Class
 	require_once('instagramPost.class.php');
 	
