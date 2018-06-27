@@ -3,7 +3,7 @@
 	"name": "jacob-ian/instagram-feed",
 	"description": "A simple Instagram feed using the old Instagram API",
 	"type": "library",
-	"version"; "1.0.0",
+	"version": "1.0.0",
 	"keywords": ["instagram", "feed", "php", "jacob-ian"],
 	"homepage": "https://github.com/jacob-ian/instagram-feed",
 	"authors": [{
