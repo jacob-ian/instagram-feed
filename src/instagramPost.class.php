@@ -8,6 +8,9 @@
 	 * @copyright : 2018 Jacob Ian Matthews
 	 */
 	
+	// Namespace
+	namespace JacobIan;
+	
 	class instagramPost {
 
 		/**
