@@ -26,6 +26,6 @@
 	$feed = new instagramFeed($database, 10, 'home');
 
 	// Echo the Instagram feed with breaks between each line for better clarity.
-	echo implode("\n", $feed->feed());
+	echo $feed->feed();
 
 ?>

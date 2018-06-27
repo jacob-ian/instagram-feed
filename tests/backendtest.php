@@ -26,8 +26,14 @@
 	// Create a string containing your Instagram Access Token
 	$accesstoken = "";
 
+	// Create the cache path string
+	$cachepath = "";
+
 	// Create an instance of the fetch class
-	$instagram_fetch = new instagramFetch($database, $accesstoken);
+	$instagram_fetch = new instagramFetch($database, $accesstoken, $cachepath);
+
+	// Change the script time limit for the initial load
+	set_time_limit(240);
 
 	// Call the fetch method
 	$instagram_fetch->fetch();

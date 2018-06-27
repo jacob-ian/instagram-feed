@@ -22,71 +22,96 @@
 		 */
 		public $name;
 
-		public function __construct($post, $name){
+		/**
+		 * [$formatted_post This is the HTML of a formatted post]
+		 * @var String
+		 */
+		public $formatted_post;
+
+		/**
+		 * [$cachepath The path to the assets folder]
+		 * @var String
+		 */
+		private $assetpath;
+
+		public function __construct($post, $name, $assetpath){
 
 			// Define inputs as properties
 			$this->post = $post;
 			$this->name = $name;
+			$this->assetpath = $assetpath;
 
 		}
 
 		public function format(){
 
+			// Create an array to store the post's HTML in
+			$this->formatted_post = array();
+
 			// Create data attributes
 			$data_attribs = "data-id='" . $this->post['id'] . "' data-url='" . $this->post['url'] . "' data-likes='" . $this->post['likes'] . "' data-comments='" . $this->post['comments'] . "'";
 
 			// Create a post container 
-			echo "<div class='" . $this->name . "_instagram_post' " . $data_attribs . ">";
+			array_push($this->formatted_post, "<div class='" . $this->name . "_instagram_post' " . $data_attribs . ">");
 
 			// Different process for a video
 			$isvideo = $this->post['isvideo'];
 
+			// Get the filepath
+			$file = addslashes($this->post['media']);
+
 			if($isvideo) {
 
-				$file = '/img/instagram/hires/' . $this->post['id'] . '.mp4';
-
 				// Process the video
-				echo "<video class='" . $this->name . "_instagram_video'><source src='" . $file . "'></video>";
+				array_push($this->formatted_post, "<video class='" . $this->name . "_instagram_video'><source src='" . $file . "'></video>");
 
 				// Create the likes and comments holder
-				echo "<div class='" . $this->name . "_instagram_video_details'>";
+				array_push($this->formatted_post, "<div class='" . $this->name . "_instagram_video_details'>");
 
 
 			} else {
 
-				$file = '/img/instagram/hires/' . $this->post['id'] . '.jpg';
-
 				// Process the image
-				echo "<img class='" . $this->name . "_instagram_image' src='" . $file . "'/>";
+				array_push($this->formatted_post, "<img class='" . $this->name . "_instagram_image' src='" . $file . "'/>");
 
 				// Create the likes and comments holder
-				echo "<div class='" . $this->name . "_instagram_image_details'>";
+				array_push($this->formatted_post, "<div class='" . $this->name . "_instagram_image_details'>");
 
 
 			}
 
 
-			// The rest of the details
+			// The rest of the details:
+			// 
+			// Path to the Icons
+			$instagram_icon = $this->assetpath . "instagram.svg";
+			$likes_icon = $this->assetpath . "likes.svg";
+			$comments_icon = $this->assetpath . "comments.svg";
+
 			// The instagram link icon
-			echo "<div class='" . $this->name . "_instagram_link'>";
-			echo "<a href='" . $this->post['url'] . "' target='_blank'><img class='" . $this->name . "_instagram_icons' src='/img/instagram/icons/instagram.svg'/></a>";
-			echo "</div>";
+			array_push($this->formatted_post, "<div class='" . $this->name . "_instagram_link'>");
+			array_push($this->formatted_post, "<a href='" . $this->post['url'] . "' target='_blank'><img class='" . $this->name . "_instagram_icons' src='" . $instagram_icon . "'/></a>");
+			array_push($this->formatted_post, "</div>");
 
 			// Likes and icon
-			echo "<div class='" . $this->name . "_instagram_likes'>";
-			echo "<img class='" . $this->name . "_instagram_icons' src='/img/instagram/icons/likes.svg'/><div class='" . $this->name . "_instagram_likes_text'>" . $this->post['likes'] . "</div>";
-				echo "</div>";
+			array_push($this->formatted_post, "<div class='" . $this->name . "_instagram_likes'>");
+			array_push($this->formatted_post, "<img class='" . $this->name . "_instagram_icons' src='" . $likes_icon . "'/><div class='" . $this->name . "_instagram_likes_text'>" . $this->post['likes'] . "</div>");
+			array_push($this->formatted_post, "</div>");
 
 			// Comments and icon
-			echo "<div class='" . $this->name . "_instagram_comments'>";
-			echo "<img class='" . $this->name . "_instagram_icons' src='/img/instagram/icons/comments.svg'/><div class='" . $this->name . "_instagram_comments_text'>" . $this->post['comments'] . "</div>";
-			echo "</div>";
+			array_push($this->formatted_post, "<div class='" . $this->name . "_instagram_comments'>");
+			array_push($this->formatted_post, "<img class='" . $this->name . "_instagram_icons' src='" . $comments_icon . "'/><div class='" . $this->name . "_instagram_comments_text'>" . $this->post['comments'] . "</div>");
+			array_push($this->formatted_post, "</div>");
 
 			// Close the details container
-			echo "</div>";
+			array_push($this->formatted_post, "</div>");
 
 			// Close post container
-			echo "</div>";
+			array_push($this->formatted_post, "</div>");
+
+			$this->formatted_post = implode("\n", $this->formatted_post);
+
+			return $this->formatted_post;
 
 		}
 

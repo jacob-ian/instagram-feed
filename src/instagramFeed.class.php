@@ -75,6 +75,25 @@
 		 */
 		private $mysqli;
 
+		/**
+		 * [$info The information from the details database]
+		 * @var Array
+		 */
+		private $info;
+
+		/**
+		 * [$cachepath The path of the local cache]
+		 * @var String
+		 */
+		private $cachepath;
+
+		/**
+		 * [$assetpath The path of the assets folder]
+		 * @var String
+		 */
+		private $assetpath;
+
+
 
 		/**
 		 * [_construct description]
@@ -96,6 +115,9 @@
 
 			// Get the posts as an array of data
 			$this->getPosts();
+
+			// Get the details information
+			$this->getInfo();
 
 		}
 
@@ -134,8 +156,7 @@
 						'comments' => $ordered_row['Comments'],
 						'isvideo' => $ordered_row['Video'],
 						'url' => $ordered_row['URL'],
-						'lowres' => $ordered_row['LoRes'],
-						'hires' => $ordered_row['HiRes']
+						'media' => $ordered_row['Media']
 					);
 					// Push into the post array
 					array_push($this->post_array, $sub_array);
@@ -149,37 +170,79 @@
 
 			}
 
-			return $this->post_array;
+		}
+
+		private function getInfo() {
+
+			// Query the database for the cachepath and assets path information
+			$q = "SELECT * FROM details";
+			$query = $this->mysqli->query($q);
+
+			// Create an array to store the databse info
+			$this->info = array();
+
+			if($query){
+
+				// Check if the result has any rows
+				if($query->num_rows > 0){
+
+					// Set each row equal to the associate array
+					while($row = $query->fetch_assoc()) {
+
+						// Add the detail and value to the array
+						$this->info[$row['Detail']] = $row['Value'];
+
+					}
+
+				} else {
+
+					// Display SQL error
+					echo "There was an error with getting details: " . $this->mysqli->error;
+
+				}
+
+
+			} else {
+
+				// Display SQL error
+				echo "Error fetching details from database: " . $this->mysqli->error;
+			}
+
+			// Define the cachepath variable
+			$this->cachepath = $this->info['CachePath'];
+			$this->assetpath = $this->cachepath . "/assets/";
 
 		}
 
 		public function feed(){
 
-			// Create an array for the formatted posts to output
+			// Create an output array for the feed
 			$this->posts = array();
 
 			// Create HTML container for the feed
 			$containerOpen = "<div class='" . $this->name . "_instagram_feed'>";
 			$containerClose = "</div>";
 
-			// Put the open container string into the output array
+			// Push the feed container opening div statement into array
 			array_push($this->posts, $containerOpen);
 
 			// Format each of the posts in the unformatted array
 			foreach($this->post_array as $post) {
 
-				$formatted = new instagramPost($post, $this->name);
-
+				$formatted = new instagramPost($post, $this->name, $this->assetpath);
 
 				// Add the formatted post to the formatted posts array
 				array_push($this->posts, $formatted->format());
 
 			}
 
-			// Put the close container string in the output array
-			array_push($this->posts, $containerClose);
-			
-			// Return the array of posts
+			// Push the feed container closing statement into array
+			array_push($this->posts, $containerOpen);
+
+			// Convert the array to a String for easier echoing
+			$this->posts = implode("\n", $this->posts);
+
+			// Return the string of posts
 			return $this->posts;
 
 		}
