@@ -21,7 +21,7 @@
 	 */
 
 	// Namespace
-	namespace JacobIan;
+	namespace JacobIan\InstagramFeed;
 
 	class instagramFetch {
 
@@ -50,6 +50,12 @@
 		private $db;
 
 		/**
+		 * [$mysqli The MySQLI Object with the database]
+		 * @var Object
+		 */
+		private $mysqli;
+
+		/**
 		 * [$accesstoken The Instagram Access Token associated to the account whose posts will be displayed]
 		 * @var String
 		 */
@@ -65,7 +71,7 @@
 		 * [$highpath The path to the cache of Instagram images/videos]
 		 * @var String
 		 */
-		public $mediapath;
+		public $jsonpath;
 
 		/**
 		 * [$assetpath The path to the assets folder]
@@ -98,24 +104,6 @@
 		public $profile_picture;
 
 		/**
-		 * [$db_feed This is the Intagram Feed as stored on the database pre-refresh.]
-		 * @var Array
-		 */
-		public $db_feed;
-
-		/**
-		 * [$deleted This contains the deleted posts since last refresh]
-		 * @var Array
-		 */
-		private $deleted;
-
-		/**
-		 * [$new This contains the new posts since last refresh]
-		 * @var Array
-		 */
-		public $new;
-
-		/**
 		 * [__construct Constructor of class]
 		 * @param Array $database    MySQL database login informatiom
 		 * @param String $accesstoken The Instagram Access token
@@ -144,18 +132,13 @@
 			// Transfer the asset files to the public_html/cachepath
 			$this->assetTransfer();
 
-			// Get the current Instagram feed from the SQL Database
-			$this->getDBFeed();
-
-			// Get the Instagram raw JSON data
-			$this->getJSON();
 
 		}
 
 		private function connectDB(){
 
 			// Connect to the database and check connection
-			$this->mysqli = new mysqli($this->host, $this->username, $this->password, $this->db);
+			$this->mysqli = new \mysqli($this->host, $this->username, $this->password, $this->db);
 
 			if($this->mysqli->connect_error){
 				die("Failed to connect to database: " . $this->mysqli->connect_error);
@@ -181,7 +164,7 @@
 				}
 
 				// Create the placeholders for the table
-				$insert = "INSERT INTO details ( Detail ) VALUES ('UserID'), ('Posts'), ('Followers'), ('ProfilePictureURL'), ('ProfilePictureLocal'), ('LastUpdate'), ('CachePath');";
+				$insert = "INSERT INTO details ( Detail ) VALUES ('UserID'), ('Posts'), ('Followers'), ('ProfilePictureURL'), ('ProfilePicturePath'), ('LastUpdate'), ('CachePath');";
 
 				// Do the query
 				if(!$this->mysqli->query($insert)) {
@@ -189,38 +172,8 @@
 					echo "There was error inserting placeholder in 'details': " . $this->mysqli->error;
 
 				}
-				
-				
 
 			}
-
-			// Create a query to select the feed table
-			$feed_query = "show tables like 'feed'";
-			$feed = $this->mysqli->query($feed_query);
-
-			if($feed) {
-
-				// If it doesn't exist, create it
-				if($feed->num_rows == 0) {
-
-					$create_feed = "CREATE TABLE feed (ID varchar(255), PostDate varchar(25), Video tinyint(1), Caption longtext, Location text, Likes int(10) unsigned, Comments int(10) unsigned, Media varchar(255), URL varchar(255))";
-					$create_fq = $this->mysqli->query($create_feed);
-
-					if(!$create_fq){
-
-						// Display MySQL Error
-						echo "There was an error creating the database table 'feed': " . $this->mysqli->error;
-
-					}
-
-				}
-			} else {
-
-				// Display MySQL error
-				echo "There was an error finding the 'feed' table: " . $this->mysqli->error;
-
-			}
-
 
 		}
 
@@ -235,13 +188,13 @@
 			}
 
 			// Check if the media storage path exists
-			$this->mediapath = $this->cachepath . '/media/';
+			$this->jsonpath = $this->cachepath . '/json/';
 
 			// If the media path doesn't exist
-			if(!is_dir($this->mediapath)){
+			if(!is_dir($this->jsonpath)){
 
 				// Make the directory
-				mkdir($this->mediapath);
+				mkdir($this->jsonpath);
 			}
 
 			// Check if the assets path exists
@@ -313,298 +266,32 @@
 				}
 			}
 
-
-
 		}
 
-		public function getDBFeed(){
-
-			// Create SQL Query
-			$feed_query = "SELECT * FROM feed ORDER BY PostDate DESC";
-			$feed_temp = $this->mysqli->query($feed_query);
-
-			// Instantiate array to store the database feed
-			$this->db_feed = array();
-
-			// Put the SQL data into the array
-			if($feed_temp){
-
-				if($feed_temp->num_rows > 0){
-
-					while($row = $feed_temp->fetch_assoc()){
-
-						// Add the row from the database data to the array
-						array_push($this->db_feed, $row);
-
-					}
-
-				}
-
-			} else {
-
-				// Display MySQL Error
-				echo 'There was an error fetching the Instagram Feed from the database: ' . $this->mysql->error;
-
-			}
-
-		}
-
-		public function getJSON(){
+		public function getInfo(){
 
 			// First, find post count and follower data
 			$info_get = file_get_contents("https://api.instagram.com/v1/users/self/?access_token=" . $this->accesstoken);
 			$info = json_decode($info_get, true);
 			
+			// Set decoded data as properties
 			$this->user_id = $info['data']['id'];
 			$this->post_count = $info['data']['counts']['media'];
 			$this->followers = $info['data']['counts']['followed_by'];
 			$this->profile_picture = $info['data']['profile_picture'];
 			
-			// Get the instagram feed 
-			$feed_get = file_get_contents('https://api.instagram.com/v1/users/' . $this->user_id . '/media/recent/?access_token=' . $this->accesstoken . '&count=' . $this->post_count);
-			$feed = json_decode($feed_get, true);
-
-			// Remove excess information
-			$this->feed = $feed['data'];
 
 		}
 
-		public function newPosts(){
+		public function cache(){
 
-			// Create a new array to hold the new posts to cache
-			$this->new = array();
+			// Get the Instagram feed 
+			$this->feed = file_get_contents('https://api.instagram.com/v1/users/' . $this->user_id . '/media/recent/?access_token=' . $this->accesstoken . '&count=' . $this->post_count);
 
-			// If there has already been an initial run
-			if(sizeof($this->db_feed) > 0){
+			// Save it to jsonpath
+			file_put_contents($this->jsonpath . "feed.json", $this->feed);
 
-				// Loop through the downloaded feed
-				foreach($this->feed as $external){
-
-					// Get the ID of the current external post
-					$ID = $external['id'];
-
-					// Create a flag variable
-					$is_in = false;
-
-					// Loop through all the cached posts to check if the post is there
-					foreach($this->db_feed as $cached){
-
-						$cachedID = $cached['ID'];
-
-						// Compare the IDs
-						if(strcmp($cachedID, $ID)) {
-
-							$is_in = true;
-
-						}
-
-					}
-
-					// If the flag is still false, add to $this->new array for caching
-					if(!$is_in) {
-
-						// Add to array
-						array_push($this->new, $external);
-
-					}
-
-				}
-
-			} else {
-
-				// Loop through downloaded feed
-				foreach($this->feed as $external){
-
-					// Add to the array
-					array_push($this->new, $external);
-
-				}
-
-			}
-			
-
-			// Return the new posts
-			return $this->new;
-			
-
-		}
-
-		public function deletedPosts(){
-
-			// Create the deleted posts array
-			$this->deleted = array();
-
-			// Loop through the cached feed
-			foreach($this->db_feed as $cached) {
-
-				// Get the ID of the current cached post
-				$id = $cached['ID'];
-
-				// Create a flag variable
-				$is_in = false;
-
-				// Loop through the refreshed data to see if it still exists
-				foreach($this->feed as $external) {
-
-					// Get the ID of the current external post
-					$ext_id = $external['id'];
-
-					// Compare it to the ID of the cached post
-					if(strcmp($ext_id, $id)){
-
-						// Set the flag to true if it is still there
-						$is_in = true;
-
-					}
-
-				}
-
-				// If the post isn't in the external data
-				if(!$is_in) {
-
-					// Put the cached post inside the deleted array
-					array_push($this->deleted, $cached);
-
-				}
-
-
-			}
-
-			// Return the array of deleted posts
-			return $this->deleted;
-
-		}
-
-		private function cache($posts){
-
-			// Loop through each post to cache
-			foreach($posts as $post) {
-
-				// Get the internal data as variables
-				$id = $post['id'];
-				$type = $post['type'];
-				$time = $post['created_time'];
-				$caption = $post['caption']['text'];
-				$location = $post['location']['name'];
-				$likes = $post['likes']['count'];
-				$comments = $post['comments']['count'];
-				$url = $post['link'];
-
-
-				// Process for an image
-				if($type == 'image') {
-
-					// Create variables
-					$mediaURL = $post['images']['standard_resolution']['url'];
-					
-					// Image downloads to folder
-					$path = $this->mediapath . $id . '.jpg';
-					file_put_contents($path, file_get_contents($mediaURL));
-
-					// Set the video boolean to false
-					$video_bool = false;
-
-
-				} elseif($type == 'video') {
-
-					// Create variables
-					$mediaURL = $post['videos']['standard_resolution']['url'];
-
-					// Hi Res video to folder
-					$path = $this->mediapath . $id . '.mp4';
-					file_put_contents($path, file_get_contents($mediaURL));
-
-					// Set video boolean to true
-					$video_bool = true;
-
-				}	
-
-
-				// Now store everything in the database
-				$q1 = "INSERT INTO feed VALUES ('" . $id ."', '";
-				$q1 .= $time . "', '" ;
-				$q1 .= $video_bool . "', '";
-				$q1 .= addslashes($caption) . "', '"; 
-				$q1 .= $location . "', '";
-				$q1 .= $likes . "', '";
-				$q1 .= $comments . "', '";
-				$q1 .= $path . "', '";
-				$q1 .= $url. "')";
-
-				if(!$this->mysqli->query($q1)) {
-
-					echo "Error inputting new images into database: " . $this->mysqli->error;
-
-				}
-			}
-
-		}
-
-		private function delete($posts) {
-
-			foreach($posts as $post) {
-
-				// Delete post from the database
-				$remove_query = "DELETE FROM feed WHERE ID = " . $post['ID'];
-				$remove = $this->mysqli->query($remove_query);
-
-				if(!$remove) {
-
-					echo "There was an error deleting the post " . $post['ID'] . ": " . $this->mysqli->error;
-				}
-
-				// Delete post from the cache
-				unlink($post['LowRes']);
-				unlink($post['HighRes']);
-
-			}
-
-
-		}
-
-		public function updateLikesComments(){
-
-			// Create foreach loop to get the current likes and comments number from all posts
-			$stats_array = array();
-
-			foreach($this->feed as $post) {
-
-				$id = $post['id'];
-				$likes = $post['likes']['count'];
-				$comments = $post['comments']['count'];
-
-				$sub_array = array(
-					'id' => $id,
-					'likes' => $likes,
-					'comments' => $comments
-				);
-
-				array_push($stats_array, $sub_array);
-
-			}
-			
-			// Create foreach loop to handle the likes and comments
-			foreach($stats_array as $stat) {
-
-				// SQL to update all likes
-				$like_query = "UPDATE feed SET Likes='" . $stat['likes'] . "' WHERE ID='" . $stat['id'] . "'";
-
-				if(!$this->mysqli->query($like_query)) {
-
-					echo 'Error updating likes: ' . $this->mysqli->error;
-
-				}
-
-				// SQL to update all comments counts
-				$comments_query = "UPDATE feed SET Comments='" . $stat['comments'] . "' WHERE ID='" . $stat['id'] . "'";
-				if(!$this->mysqli->query($comments_query)) {
-
-					echo 'Error updating comments: ' . $this->mysqli->error;
-
-				}
-
-			}
-
+		
 		}
 
 		public function updateDetails(){
@@ -618,6 +305,7 @@
 			$detail5 = $update_d . date('r', time()) . "' WHERE Detail = 'LastUpdate'";
 			$detail6 = $update_d . $this->cachepath . "' WHERE Detail = 'CachePath'";
 
+			// Put all updates in an array
 			$update_array = array($detail1, $detail2, $detail3, $detail4, $detail5, $detail6);
 
 			// For loop to handle detail updates
@@ -639,81 +327,61 @@
 
 		public function updateProfilePicture(){
 
-			// Get the stored profile picture URL from the database
-			$p_picture_q = "SELECT Value FROM details WHERE Detail='ProfilePictureURL'";
-			$db_pic_result = $this->mysqli->query($p_picture_q);
+			// Define the profile picture path
+			$pp_path = $this->cachepath . '/profile_picture.jpg';
 
-			if($db_pic_result){
+			// If the file exists
+			if(is_file($pp_path)){
 
-				// Connection successful
-				if($db_pic_result->num_rows > 0){
+				// Get the data of the current and new profile picture
+				$current = file_get_contents($pp_path);
+				$new = file_get_contents($this->profile_picture);
 
-					while($pic_row = $db_pic_result->fetch_assoc()){
+				if(strcmp($current, $new) !== 0){
 
-						$db_picture = $pic_row['Value'];
-					}
+					// If they are different, replace the old with the enw
+					unlink($pp_path);
 
-					// Compare the database URL to the URL from the downloaded JSON data
-					if(!strcmp($db_picture[0], $this->profile_picture)) {
+					// Download the new picture
+					file_put_contents($pp_path, file_get_contents($this->profile_picture));
 
-						// There is a new profile picture, so delete old and download new
-						$pp_path = $this->cachepath . '/profile_picture.jpg';
-
-						if(is_file($pp_path)){
-
-							unlink($pp_path);
-						}
-
-						file_put_contents($pp_path, file_get_contents($this->profile_picture));
-
-						// Add to database
-						$updateq = "UPDATE details SET Value ='" . $pp_path . "' WHERE Detail='ProfilePictureLocal'";
-						if(!$this->mysqli->query($updateq)) {
-
-							// Display SQL Error
-							echo "There was an error updating the local profile picture path: " . $this->mysqli->error;
-
-						}
-
-					}
 				}
-			
+				
 			} else {
 
-				// Echo SQL Error
-				echo "There was an error getting the database profile picture: " . $this->mysqli->error;
+				// First download, define the path of the profile picture
+				$q = "UPDATE details SET Value='" . $pp_path . "' WHERE Detail = 'ProfilePicturePath'";
+				$query = $this->mysqli->query($q);
+
+				if($query){
+
+					// Download the picture
+					file_put_contents($pp_path, file_get_contents($this->profile_picture));
+					
+				} else {
+
+					// Couldn't add to database, display error
+					echo "The profile picture path could not be updated: " . $this->mysqli->error;
+
+				}
 
 			}
-
 
 		}
 
 		public function fetch(){
 
-			// Download and cache any new posts
-			if(sizeof($this->newPosts()) > 0) {
+			// Download the new details information
+			$this->getInfo();
 
-				// Call cache() method with the array of new posts
-				$this->cache($this->newPosts());
+			// Download and cache the JSON feed
+			$this->cache();
 
-			}
-			
-			// Delete any posts that were lost due to 20 post max, or were deleted from the page
-			if(sizeof($this->deletedPosts()) > 0) {
-
-				// Call delete() method with array of deleted posts
-				$this->delete($this->deletedPosts());
-
-			}
-
-			// Update the likes and comments on the database cached posts
-			$this->updateLikesComments();
+			// Update details database
+			$this->updateDetails();
 
 			// Update the profile picture if it has changed
 			$this->updateProfilePicture();
-
-			// Update the profile information if it has changed
-			$this->updateDetails();
 
 		}
 
