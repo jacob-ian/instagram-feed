@@ -17,7 +17,7 @@
 	*/
 
 	// Give it the namespace
-	namespace JacobIan;
+	namespace JacobIan\InstagramFeed;
 
 	// Require the instagramPost Class
 	require_once('instagramPost.class.php');
@@ -116,62 +116,22 @@
 			// Connect to the database
 			$this->connectDB();
 
-			// Get the posts as an array of data
-			$this->getPosts();
-
 			// Get the details information
 			$this->getInfo();
+
+			// Get the posts out of the JSON cache
+			$this->getPosts();
 
 		}
 
 		private function connectDB() {
 
 			// Connect to the database and check connection
-			$this->mysqli = new mysqli($this->host, $this->username, $this->password, $this->db);
+			$this->mysqli = new \mysqli($this->host, $this->username, $this->password, $this->db);
 
 			if($this->mysqli->connect_error){
 				die("Failed to connect to database: " . $this->mysqli->connect_error);
 			} 
-
-		}
-
-		public function getPosts(){
-
-			// Get the posts from the database. Get the specified number of posts in descending date order. 
-			$order_query = "SELECT * FROM feed ORDER BY PostDate DESC LIMIT " . $this->count;
-			$ordered_arr = $this->mysqli->query($order_query);
-
-			// Create an array to store the posts
-			$this->post_array = array();
-
-			// Get the posts out of the query
-			if($ordered_arr->num_rows > 0){
-
-				while($ordered_row = $ordered_arr->fetch_assoc()) {
-
-					// Create sub-array
-					$sub_array = array(
-						'id' => $ordered_row['ID'],
-						'date' => $ordered_row['PostDate'],
-						'caption' => $ordered_row['Caption'],
-						'location' => $ordered_row['Location'],
-						'likes' => $ordered_row['Likes'],
-						'comments' => $ordered_row['Comments'],
-						'isvideo' => $ordered_row['Video'],
-						'url' => $ordered_row['URL'],
-						'media' => $ordered_row['Media']
-					);
-					// Push into the post array
-					array_push($this->post_array, $sub_array);
-
-				}
-
-			} else {
-
-				echo 'Error: Could not fetch latest Instagram posts. ' . $this->mysqli->error;
-				echo "\nPlease contact the website administrator.";
-
-			}
 
 		}
 
@@ -214,6 +174,20 @@
 			// Define the cachepath variable
 			$this->cachepath = $this->info['CachePath'];
 			$this->assetpath = $this->cachepath . "/assets/";
+
+		}
+
+
+		public function getPosts(){
+
+			// Get the JSON file
+			$json = file_get_contents($this->cachepath . '/json/feed.json');
+
+			// Get the initial array
+			$json_arr = json_decode($json, true);
+
+			// Cut out the excess information
+			$this->post_array = $json_arr['data'];
 
 		}
 

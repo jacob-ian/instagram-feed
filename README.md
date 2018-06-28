@@ -25,19 +25,24 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 
 	```php
 	require_once('instagram-feed/src/instagramFetch.class.php');
-	$instagramData = new instagramFetch($AccessToken, $database);
+	$instagramData = new \JacobIan\InstagramFeed\instagramFetch($database, $accesstoken, $cachepath);
 	$instagramData->fetch();
 	```
-	Note that the parameter $database should be an array with the structure:
+	The require_once can be replaced with an autoloader.
 
-	```php
-	$database = array(
-		"username"=>"[username]",
-		"password"=>"[password]",
-		"host"=>"[host]",
-		"database"=>"instagram"
-	);
-	```
+	Where: 
+	- $database should be an array with the structure:
+
+		```php
+		$database = array(
+			"username"=>"[username]",
+			"password"=>"[password]",
+			"host"=>"[host]",
+			"database"=>"instagram"
+		);
+		```
+	- $accesstoken is a string containing the Instagram Access Token relating to the account you wish to display.
+	- $cachepath should be a string with the path to a location in the public_html/webroot directory where you wish the Instagram Cache and Assets to be stored.
 
 	This cron job should run every 15 minutes, but frequency can be increased depending on how often you wish the feed to refresh.
 
@@ -46,25 +51,27 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 
 	```php
 	require_once('instagram-feed/src/instagramFeed.class.php');
-	$instagram_feed = new instagramFeed($database, $count, $name);
-	echo implode("\n", $instagram_feed->feed());
+	$instagram_feed = new \JacobIan\InstagramFeed\instagramFeed($database, $count, $name);
+	echo $instagram_feed->feed();
 	```
+	
+	Again, the require_once can be replaced by an autoloader.
 
 	Where:
 	- $count is an integer describing the number of latest posts to display in the feed. Instagram API is limited to a maximum of 20 posts.
 	- $name is a string containing the name of the Instagram feed, e.g. home. This prevents conflicts in CSS when multiple feeds are used across a website.
 
-4. Enjoy!
+4. Complete your own CSS Styling and then enjoy the library!
 
 
+# Notes:
 
-# Extras:
-
-- ```instagramFetch() ``` also creates a database table named 'Details' which contains the following information:
+- The ```\JacobIan\InstagramFeed\instagramFetch``` class automatically transfers the contents of ```'..\assets'``` to the cache folder that is publicly accessable.
+- ```\JacobIan\InstagramFeed\instagramFetch() ``` creates a database table named 'details' which contains the following information:
 	- UserID: Instagram User ID
 	- ProfilePictureURL: The URL to your profile picture
-	- ProfilePictureLocal: The path to the locally stored copy of your profile picture
+	- ProfilePicturePath: The path to the locally stored copy of your profile picture
 	- Followers: Your follower count
 	- Posts: Your post count
-	- LastPost: The time of your last post (according to latest refresh)
 	- LastUpdate: The time of the last successful instagramFetch cron job.
+	- CachePath: The path where your Instagram Cache and Assets are stored.

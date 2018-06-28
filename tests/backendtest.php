@@ -30,10 +30,7 @@
 	$cachepath = "";
 
 	// Create an instance of the fetch class
-	$instagram_fetch = new instagramFetch($database, $accesstoken, $cachepath);
-
-	// Change the script time limit for the initial load
-	set_time_limit(240);
+	$instagram_fetch = new \JacobIan\InstagramFeed\instagramFetch($database, $accesstoken, $cachepath);
 
 	// Call the fetch method
 	$instagram_fetch->fetch();
