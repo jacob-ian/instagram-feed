@@ -9,11 +9,9 @@
 	 * @copyright : 2018 Jacob Ian Matthews
 	*/
 
-	// Load the necessary classes. Please point this to the instagram-feed repository folder.
-	spl_autoload_register(function($class) {
-		require '../src/' . $class . '.class.php';
-	});
-
+	// Load the necessary classes
+	require_once("../src/instagramFeed.class.php");
+	
 	// Create an array containing datbase information. 
 	$database = array(
 			"username"=>"",
@@ -23,7 +21,7 @@
 	);
 
 	// Create a new Instagram feed, showing the last 10 posts and including the keyword 'home' in all its <div> elements.
-	$feed = new instagramFeed($database, 10, 'home');
+	$feed = new \JacobIan\InstagramFeed\instagramFeed($database, 10, 'home');
 
 	// Echo the Instagram feed with breaks between each line for better clarity.
 	echo $feed->feed();
