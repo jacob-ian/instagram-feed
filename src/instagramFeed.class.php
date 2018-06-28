@@ -181,7 +181,7 @@
 		public function getPosts(){
 
 			// Get the JSON file
-			$json = file_get_contents('../tests/cache/json/feed.json');
+			$json = file_get_contents($this->cachepath . '/json/feed.json');
 
 			// Get the initial array
 			$json_arr = json_decode($json, true);
