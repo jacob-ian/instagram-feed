@@ -31,10 +31,10 @@
 		public $count;
 
 		/**
-		 * [$name The name of the Instagram Feed to prevent CSS conflicts over multiple uses of the package]
+		 * [$name The Instagram Feed's CSS Style tag]
 		 * @var String
 		 */
-		public $name;
+		public $style;
 
 		/**
 		 * [$post_array An array of the unstyled/raw posts as json data]
@@ -103,7 +103,7 @@
 		 * @param  Array $db    An array containing the host, database, username and password for an SQL database.
 		 * @param  integer $count An integer with the requested number of Instagram posts to display.
 		 */
-		public function __construct($db, $count, $name){
+		public function __construct($db, $count, $style){
 
 			// Save the input parameters as properties
 			$this->host = $db['host'];
@@ -111,7 +111,7 @@
 			$this->password = $db['password'];
 			$this->db = $db['database'];
 			$this->count = $count;
-			$this->name = $name;
+			$this->name = $style;
 
 			// Connect to the database
 			$this->connectDB();
@@ -197,7 +197,7 @@
 			$this->posts = array();
 
 			// Create HTML container for the feed
-			$containerOpen = "<div class='" . $this->name . "_instagram_feed'>";
+			$containerOpen = "<div class='instagram_feed'>";
 			$containerClose = "</div>";
 
 			// Push the feed container opening div statement into array
@@ -206,7 +206,7 @@
 			// Format each of the posts in the unformatted array
 			foreach($this->post_array as $post) {
 
-				$formatted = new instagramPost($post, $this->name, $this->assetpath);
+				$formatted = new instagramPost($post, $this->style, $this->assetpath);
 
 				// Add the formatted post to the formatted posts array
 				array_push($this->posts, $formatted->format());
