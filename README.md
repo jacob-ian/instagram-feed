@@ -28,7 +28,7 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 	$instagramData = new \JacobIan\InstagramFeed\instagramFetch($database, $accesstoken, $cachepath);
 	$instagramData->fetch();
 	```
-	The ```php require_once()``` can be replaced with an autoloader.
+	The ```require_once()``` can be replaced with an autoloader.
 
 	Where: 
 	- ```$database``` should be an array with the structure:
@@ -55,7 +55,7 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 	echo $instagram_feed->feed();
 	```
 	
-	Again, the ```php require_once()``` can be replaced by an autoloader.
+	Again, the ```require_once()``` can be replaced by an autoloader.
 
 	Where:
 	- ```$count``` is an integer describing the number of latest posts to display in the feed. Instagram API is limited to a maximum of 20 posts.
