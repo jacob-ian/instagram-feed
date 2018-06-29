@@ -72,14 +72,18 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 5. Enjoy!
 
 
-# To Do:
+
+
+
+## To Do:
 
 - [ ] Create the stylesheets
 - [x] Create a CDN to hold the stylesheets
 
 
 
-# Notes:
+
+## Notes:
 
 - The `\JacobIan\InstagramFeed\instagramFetch` class automatically transfers the contents of ```'..\assets'``` to the cache folder that is publicly accessable.
 - `\JacobIan\InstagramFeed\instagramFetch` creates a database table named 'details' which contains the following information:
