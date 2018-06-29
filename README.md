@@ -11,7 +11,7 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 
 # Usage:
 
-1. Include this repository in your project via Composer.
+1. Include this repository in your project via Composer (jacob-ian/instagram-feed).
 
 2. Create a MYSQL Database to hold the data:
 
