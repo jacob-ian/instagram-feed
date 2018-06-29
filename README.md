@@ -81,8 +81,8 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 
 # Notes:
 
-- The ```\JacobIan\InstagramFeed\instagramFetch``` class automatically transfers the contents of ```'..\assets'``` to the cache folder that is publicly accessable.
-- ```\JacobIan\InstagramFeed\instagramFetch() ``` creates a database table named 'details' which contains the following information:
+- The `\JacobIan\InstagramFeed\instagramFetch` class automatically transfers the contents of ```'..\assets'``` to the cache folder that is publicly accessable.
+- `\JacobIan\InstagramFeed\instagramFetch` creates a database table named 'details' which contains the following information:
 	- UserID: Instagram User ID
 	- ProfilePictureURL: The URL to your profile picture
 	- ProfilePicturePath: The path to the locally stored copy of your profile picture
@@ -90,4 +90,4 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 	- Posts: Your post count
 	- LastUpdate: The time of the last successful instagramFetch cron job.
 	- CachePath: The path where your Instagram Cache and Assets are stored.
-- Custom CSS can be used to style the Instagram posts by using a custom tag for ```$style``` when creating the ```\JacobIan\InstagramFeed\instagramFeed``` object.
+- Custom CSS can be used to style the Instagram posts by using a custom tag for `$style` when creating the `\JacobIan\InstagramFeed\instagramFeed` object.
