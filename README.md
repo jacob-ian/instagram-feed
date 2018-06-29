@@ -28,10 +28,10 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 	$instagramData = new \JacobIan\InstagramFeed\instagramFetch($database, $accesstoken, $cachepath);
 	$instagramData->fetch();
 	```
-	The ```require_once()``` can be replaced with an autoloader.
+	The `require_once()` can be replaced with an autoloader.
 
 	Where: 
-	- ```$database``` should be an array with the structure:
+	- `$database` should be an array with the structure:
 
 		```php
 		$database = array(
@@ -41,8 +41,8 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 			"database"=>"instagram"
 		);
 		```
-	- ```$accesstoken``` is a string containing the Instagram Access Token relating to the account you wish to display.
-	- ```$cachepath``` should be a string with the path to a location in the public_html/webroot directory where you wish the Instagram Cache and Assets to be stored.
+	- `$accesstoken` is a string containing the Instagram Access Token relating to the account you wish to display.
+	- `$cachepath` should be a string with the path to a location in the public_html/webroot directory where you wish the Instagram Cache and Assets to be stored.
 
 	This cron job should run every 15 minutes, but frequency can be increased depending on how often you wish the feed to refresh.
 
@@ -58,19 +58,24 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 	Again, the ```require_once()``` can be replaced by an autoloader.
 
 	Where:
-	- ```$count``` is an integer describing the number of latest posts to display in the feed. Instagram API is limited to a maximum of 20 posts.
-	- ```$style``` is a string containing the desired CSS Style tags on each Instagram Post (the grid size). The available tags are:
-		- ```'post_small'``` : Grid size of 150x150px
-		- ```'post_medium'``` : Grid size of 300x300px
-		- ```'post_large'``` : Grid size of 640x640px
+	- `$count` is an integer describing the number of latest posts to display in the feed. Instagram API is limited to a maximum of 20 posts.
+	- `$style` is a string containing the desired CSS Style tags on each Instagram Post (the grid size). The available tags are:
+		- `'post_small'` : Grid size of 150x150px
+		- `'post_medium'` : Grid size of 300x300px
+		- `'post_large'` : Grid size of 640x640px
 
-4. Enjoy!
+4. Include the following line of code to the `<head>` of the webpage containing the Instagram Feed:
+	```html
+	<link rel="stylesheet" type="text/css" href="https://gitcdn.xyz/repo/jacob-ian/instagram-feed/master/css/feed.css"/>
+	```
+
+5. Enjoy!
 
 
 # To Do:
 
-- Create the stylesheets
-- Create a CDN to hold the stylesheets
+- [ ] Create the stylesheets
+- [x] Create a CDN to hold the stylesheets
 
 
 
