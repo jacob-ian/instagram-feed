@@ -60,11 +60,18 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 	Where:
 	- $count is an integer describing the number of latest posts to display in the feed. Instagram API is limited to a maximum of 20 posts.
 	- $style is a string containing the desired CSS Style tags on each Instagram Post (the grid size). The available tags are:
-		- 'post_small' : Grid size of 250x250px
-		- 'post_medium' : Grid size of 400x400px
+		- 'post_small' : Grid size of 150x150px
+		- 'post_medium' : Grid size of 300x300px
 		- 'post_large' : Grid size of 640x640px
 
-4. Enjoy
+4. Enjoy!
+
+
+# To Do:
+
+- Create the stylesheets
+- Create a CDN to hold the stylesheets
+
 
 
 # Notes:
