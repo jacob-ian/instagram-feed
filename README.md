@@ -85,4 +85,4 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 	- Posts: Your post count
 	- LastUpdate: The time of the last successful instagramFetch cron job.
 	- CachePath: The path where your Instagram Cache and Assets are stored.
-- Custom CSS can be used to style the Instagram posts by using a custom tag for $style when creating the \JacobIan\InstagramFeed\instagramFeed object.
+- Custom CSS can be used to style the Instagram posts by using a custom tag for ```$style``` when creating the ```\JacobIan\InstagramFeed\instagramFeed``` object.
