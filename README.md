@@ -59,26 +59,55 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 
 	Where:
 	- `$count` is an integer describing the number of latest posts to display in the feed. Instagram API is limited to a maximum of 20 posts.
-	- `$style` is a string containing the desired CSS Style tags on each Instagram Post (the grid size). The available tags are:
-		- `'post_small'` : Grid size of 150x150px
-		- `'post_medium'` : Grid size of 300x300px
-		- `'post_large'` : Grid size of 640x640px
+	- `$style` is a string containing the desired CSS Style tags on each Instagram Post. See CSS Styles below.
 
-4. Include the following line of code to the `<head>` of the webpage containing the Instagram Feed:
+4. Include the following two lines of code to the `<head>` of the webpage containing the Instagram Feed:
 	```html
-	<link rel="stylesheet" type="text/css" href="https://gitcdn.xyz/repo/jacob-ian/instagram-feed/master/css/feed.css"/>
+	<link rel="stylesheet" type="text/css" href="https://min.gitcdn.xyz/repo/jacob-ian/instagram-feed/master/css/feed.css"/>
+	<script src="https://min.gitcdn.xyz/repo/jacob-ian/instagram-feed/master/js/feed.js"></script>
 	```
 
 5. Enjoy!
 
 
+## CSS Styles:
+
+The available CSS tags are:
+	
+	Size:
+		- `'small'` : Grid size of 150x150px with a frame around the media
+		- `'medium'` : Grid size of 300x300px with a frame around the media
+		- `'large'` : Grid size of 640x640px with a frame around the media
+
+		- `'small_noframe'` : Grid size of 150x150px without a frame
+		- `'medium_noframe'` : Grid size of 300x300px without a frame
+		- `'large_noframe'` : Grid size of 640x640px without a frame
+
+	Color:
+		- `'[size] dark'` : Sets post background-color to `#333` (dark-grey)
+		- `'[size] transparent'` : Sets post background-color to transparent
+		- `'[size] noborder' : Removes the border on the posts
+		- Note: the default background-color is `#fff` (white).
+
+	Spacing:
+		- `'nomargin'` : Removes the gap between the posts in the Instagram Feed grid.
 
 
+Example Styles: 
 
-## To Do:
+	- 'small dark'` : A small grid size with a frame of colour #333 around the media
+	- 'large_noframe nomargin noborder' : A large grid size without a frame and no gaps between the posts. This setup makes it easy to use the Masonry JS Script.
 
-- [ ] Create the stylesheets
-- [x] Create a CDN to hold the stylesheets
+Usage:
+	
+	- Only one Size tag can be used, and it is also the minimum requirement for the feed to work.
+	- After the size tag, the other tags can be added on with a space in between.
+
+
+Custom Styles:
+
+	- Custom Styles can be used by adding them to the `$style` string with a space.
+	- To use a custom size style, the size tag can be replaced by a custom string. This will then be converted to the CSS tag `post_[custom]` and `media_[custom]`.
 
 
 
@@ -94,4 +123,3 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 	- Posts: Your post count
 	- LastUpdate: The time of the last successful instagramFetch cron job.
 	- CachePath: The path where your Instagram Cache and Assets are stored.
-- Custom CSS can be used to style the Instagram posts by using a custom tag for `$style` when creating the `\JacobIan\InstagramFeed\instagramFeed` object.

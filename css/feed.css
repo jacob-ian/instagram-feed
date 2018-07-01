@@ -8,3 +8,271 @@
  * @license : Apache 2.0
  * @copyright : 2018 Jacob Ian Matthews
  */
+
+
+/* Small Windows and Mobile Devices */
+@media only screen and (min-width: 300px){
+
+	.instagram_feed {
+	
+		height: auto;
+		width: 100%;
+		color: rgba(255,255,255, 0.8);
+		background-color: transparent;
+
+	}
+
+	.post_small {
+	
+		height: 150px;
+		width: 150px;
+		margin: 2px;
+
+	}
+
+	.post_medium {
+		
+		height: 300px;
+		width: 300px;
+		margin: 4px;
+
+	}
+
+	.post_large {
+		
+		height: 640px;
+		width: 640px;
+		margin: 5px;
+
+	}
+
+	.post_small_noframe {
+		
+		max-height: 150px;
+		max-width: 150px;
+		margin: 2px;
+
+	}
+
+	.post_medium_noframe {
+		
+		max-height: 300px;
+		max-width: 300px;
+		margin: 4px;
+
+	}
+
+	.post_large_noframe {
+		
+		max-height: 640px;
+		max-width: 640px;
+		margin: 5px;
+
+	}
+
+	.media_small {
+		
+		max-height: 144px;
+		max-width: 144px;
+		padding: 3px;
+
+	}
+
+	.media_medium {
+		
+		max-height: 288px;
+		max-width: 288px;
+		padding: 6px;
+
+	}
+
+	.media_large {
+		
+		max-height: 622px;
+		max-width: 622px;
+		padding: 9px;
+
+	}
+
+	.media_small_noframe {
+		
+		max-height: 150px;
+		max-width: 150px;
+
+	}
+
+	.media_medium_noframe {
+		
+		max-height: 300px;
+		max-width: 300px;
+
+	}
+
+	.media_large_noframe {
+		
+		max-height: 640px;
+		max-width: 640px;
+
+	}
+
+	.nomargin {
+		
+		margin: 0 !important;
+		
+	}
+
+	.noborder {
+		
+		border: 0px solid transparent !important;
+
+	}
+
+	.dark {
+		
+		background-color: #333 !important;
+
+	}
+
+	.transparent {
+		
+		background-color: transparent !important;
+
+	}
+
+	.instagram_post {
+
+		background-color: #fff;
+		float: left;
+		position: relative;
+		border: solid 1px rgba(0,0,0,0.1);
+		display: flex;
+		align-items: center;
+		-webkit-transition: all 0.3s ease;
+		-moz-transition: all 0.3s ease;
+		-ms-transition: all 0.3s ease;
+		-o-transition: all 0.3s ease;
+		transition: all 0.3s ease;
+		overflow: hidden;
+
+
+	}
+
+
+	.instagram_image, .instagram_video {
+		
+		margin-left: auto;
+		margin-right: auto;
+		display: grid;
+		position: relative;
+		-webkit-transition: all 0.3s ease;
+		-moz-transition: all 0.3s ease;
+		-ms-transition: all 0.3s ease;
+		-o-transition: all 0.3s ease;
+		transition: all 0.3s ease;
+
+	}
+
+	.instagram_playvideo {
+		
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		height: 40px;
+		width: auto;
+		opacity: 0.8;
+		-webkit-transition: all 0.3s ease;
+		-moz-transition: all 0.3s ease;
+		-ms-transition: all 0.3s ease;
+		-o-transition: all 0.3s ease;
+		transition: all 0.3s ease;
+
+	}
+
+
+	.instagram_details {
+		
+		opacity: 0;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		top: 0;
+		right: 0;
+		height: 100%;
+		width: calc(100% - 4px);
+		padding: 2px;
+		-webkit-transition: all 0.3s ease;
+		-moz-transition: all 0.3s ease;
+		-ms-transition: all 0.3s ease;
+		-o-transition: all 0.3s ease;
+		transition: all 0.3s ease;
+		background-color: rgba(0,0,0,0.7);
+
+	}
+
+		.instagram_details:hover {
+			
+			opacity: 1;
+
+		}
+	
+	.instagram_time {
+		
+		font-family: sans-serif;
+		margin-top: 40%;
+		font-size: 0.9em;
+		width: 100%;
+		text-align: center;
+		cursor: default;
+		pointer-events: none;
+
+	}
+
+	.instagram_link {
+
+		height: 15%;
+		width: auto;
+		position: absolute;
+		bottom: 5px;
+		left: 5px;
+
+	}
+
+	.instagram_stats {
+		
+		height: 15%;
+		width: auto;
+		position: absolute;
+		bottom: 5px;
+		right: 5px;
+		display: flex;
+		align-items: center;
+
+	}
+
+	.instagram_detail {
+		
+		height: 100%;
+		width: auto;
+		font-size: 15px;
+		font-family: sans-serif;
+		display: flex;
+		align-items: center;
+
+	}
+
+		.instagram_detail:nth-child(2) {
+			
+			margin-left: 5px;
+
+		}
+
+	.instagram_icons {
+
+		width: auto;
+		height: 100%;
+		margin-right: 2px;
+
+	}
+	
+
+}

@@ -111,7 +111,7 @@
 			$this->password = $db['password'];
 			$this->db = $db['database'];
 			$this->count = $count;
-			$this->name = $style;
+			$this->style = $style;
 
 			// Connect to the database
 			$this->connectDB();
@@ -181,7 +181,7 @@
 		public function getPosts(){
 
 			// Get the JSON file
-			$json = file_get_contents($this->cachepath . '/json/feed.json');
+			$json = file_get_contents($this->assetpath . 'json/feed.json');
 
 			// Get the initial array
 			$json_arr = json_decode($json, true);
@@ -196,25 +196,36 @@
 			// Create an output array for the feed
 			$this->posts = array();
 
-			// Create HTML container for the feed
-			$containerOpen = "<div class='instagram_feed'>";
-			$containerClose = "</div>";
+			// Don't allow it to continue if there is an empty style string
+			if(is_null($this->style)){
 
-			// Push the feed container opening div statement into array
-			array_push($this->posts, $containerOpen);
+				// Display an error
+				array_push($this->posts, "<p>Please include a CSS tag in the Instagram Feed object. Instructions can be found <a href='https://github.com/jacob-ian/instagram-feed/blob/master/README.md' target='_blank'>here</a>.</p>");
+			
+			} else {
 
-			// Format each of the posts in the unformatted array
-			foreach($this->post_array as $post) {
+				// Create HTML container for the feed
+				$containerOpen = "<div class='instagram_feed'>";
+				$containerClose = "</div>";
 
-				$formatted = new instagramPost($post, $this->style, $this->assetpath);
+				// Push the feed container opening div statement into array
+				array_push($this->posts, $containerOpen);
 
-				// Add the formatted post to the formatted posts array
-				array_push($this->posts, $formatted->format());
+				// Format each of the posts in the unformatted array
+				foreach($this->post_array as $post) {
+
+					$formatted = new instagramPost($post, $this->style, $this->assetpath);
+
+					// Add the formatted post to the formatted posts array
+					array_push($this->posts, $formatted->format());
+
+				}
+
+				// Push the feed container closing statement into array
+				array_push($this->posts, $containerOpen);
 
 			}
-
-			// Push the feed container closing statement into array
-			array_push($this->posts, $containerOpen);
+				
 
 			// Convert the array to a String for easier echoing
 			$this->posts = implode("\n", $this->posts);
