@@ -74,40 +74,40 @@ An Instagram Feed using the old API. It will cache the post data in your webserv
 
 The available CSS tags are:
 	
-	Size:
-		- `'small'` : Grid size of 150x150px with a frame around the media
-		- `'medium'` : Grid size of 300x300px with a frame around the media
-		- `'large'` : Grid size of 640x640px with a frame around the media
+Size:
+- `'small'` : Grid size of 150x150px with a frame around the media
+- `'medium'` : Grid size of 300x300px with a frame around the media
+- `'large'` : Grid size of 640x640px with a frame around the media
 
-		- `'small_noframe'` : Grid size of 150x150px without a frame
-		- `'medium_noframe'` : Grid size of 300x300px without a frame
-		- `'large_noframe'` : Grid size of 640x640px without a frame
+- `'small_noframe'` : Grid size of 150x150px without a frame
+- `'medium_noframe'` : Grid size of 300x300px without a frame
+- `'large_noframe'` : Grid size of 640x640px without a frame
 
-	Color:
-		- `'[size] dark'` : Sets post background-color to `#333` (dark-grey)
-		- `'[size] transparent'` : Sets post background-color to transparent
-		- `'[size] noborder' : Removes the border on the posts
-		- Note: the default background-color is `#fff` (white).
+Color:
+- `'[size] dark'` : Sets post background-color to `#333` (dark-grey)
+- `'[size] transparent'` : Sets post background-color to transparent
+- `'[size] noborder'` : Removes the border on the posts
+- Note: the default background-color is `#fff` (white).
 
-	Spacing:
-		- `'nomargin'` : Removes the gap between the posts in the Instagram Feed grid.
+Spacing:
+- `'nomargin'` : Removes the gap between the posts in the Instagram Feed grid.
 
 
 Example Styles: 
 
-	- 'small dark'` : A small grid size with a frame of colour #333 around the media
-	- 'large_noframe nomargin noborder' : A large grid size without a frame and no gaps between the posts. This setup makes it easy to use the Masonry JS Script.
+- `'small dark'` : A small grid size with a frame of colour #333 around the media
+- `'large_noframe nomargin noborder'` : A large grid size without a frame and no gaps between the posts. This setup makes it easy to use the Masonry JS Script.
 
 Usage:
 	
-	- Only one Size tag can be used, and it is also the minimum requirement for the feed to work.
-	- After the size tag, the other tags can be added on with a space in between.
+- Only one Size tag can be used, and it is also the minimum requirement for the feed to work.
+- After the size tag, the other tags can be added on with a space in between.
 
 
 Custom Styles:
 
-	- Custom Styles can be used by adding them to the `$style` string with a space.
-	- To use a custom size style, the size tag can be replaced by a custom string. This will then be converted to the CSS tag `post_[custom]` and `media_[custom]`.
+- Custom Styles can be used by adding them to the `$style` string with a space.
+- To use a custom size style, the size tag can be replaced by a custom string. This will then be converted to the CSS tag `post_[custom]` and `media_[custom]`.
 
 
 
