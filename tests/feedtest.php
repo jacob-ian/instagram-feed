@@ -20,8 +20,8 @@
 			"database"=>""
 	);
 
-	// Create a new Instagram feed, showing the last 10 posts and including the keyword 'home' in all its <div> elements.
-	$feed = new \JacobIan\InstagramFeed\instagramFeed($database, 10, 'home');
+	// Create a new Instagram feed, showing the last 10 posts and including the style 'small'
+	$feed = new \JacobIan\InstagramFeed\instagramFeed($database, 10, 'small');
 
 	// Echo the Instagram feed with breaks between each line for better clarity.
 	echo $feed->feed();
