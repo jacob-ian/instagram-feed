@@ -84,9 +84,9 @@ Size:
 - `'large_noframe'` : Grid size of 640x640px without a frame
 
 Color:
-- `'[size] dark'` : Sets post background-color to `#333` (dark-grey)
-- `'[size] transparent'` : Sets post background-color to transparent
-- `'[size] noborder'` : Removes the border on the posts
+- `'dark'` : Sets post background-color to `#333` (dark-grey)
+- `'transparent'` : Sets post background-color to transparent
+- `'noborder'` : Removes the border on the posts
 - Note: the default background-color is `#fff` (white).
 
 Spacing:
